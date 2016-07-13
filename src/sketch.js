@@ -1,5 +1,6 @@
 // globals ew
 var grid;
+var sounds;
 var lastTime = (new Date()).getTime();
 var gridSize = 10;
 
@@ -23,6 +24,29 @@ function setup() {
 
 	// ... and start one as black
 	grid[5][0] = on;
+
+	// create oscillators for each grid location w/ sound matrix
+	sounds = [];
+	for (var x = 0; x < gridSize; x++) {
+		var r = [];
+		for (var y = 0; y < gridSize; y++) {
+			var osc = new p5.Oscillator();
+			osc.setType('sine');
+			// TODO(mbforbes): Curspot. Figure out sounds with p5.js.
+			//
+			// Try generating these frequencies from a function:
+			// - http://www.phy.mtu.edu/~suits/notefreqs.html
+			//
+			// Idea:
+			// - pentatonic scale
+			// - different note per column
+			// - each row is a different octave
+			//
+			// osc.freq();
+			r.push(off);
+		}
+		sounds.push(r);
+	}
 }
 
 /// custom function
@@ -40,11 +64,26 @@ function step() {
 	for (var i = 0; i < grid.length; i++) {
 		for (var j = 0; j < grid[i].length; j++) {
 			// rules!
+			// turn on if left neighbor on
 			if (i > 0 && grid[i-1][j] == on && grid[i][j] == off) {
 				newGrid[i][j] = on;
-				console.log('updating at (' + i + ', ' + j + ')');
-				console.log(newGrid[i][j]);
-				console.log(grid[i][j]);
+				// console.log('updating at (' + i + ', ' + j + ')');
+				// console.log(newGrid[i][j]);
+				// console.log(grid[i][j]);
+			}
+			// turn on if right neighbor on
+			if (i < grid.length - 1 && grid[i+1][j] == on && grid[i][j] == off) {
+				newGrid[i][j] = on;
+				// console.log('updating at (' + i + ', ' + j + ')');
+				// console.log(newGrid[i][j]);
+				// console.log(grid[i][j]);
+			}
+			// turn off if both neighbors on
+			if (i < grid.length - 1 && i > 0 && grid[i+1][j] == on && grid[i-1][j] == on && grid[i][j] == on) {
+				newGrid[i][j] = off;
+				// console.log('updating at (' + i + ', ' + j + ')');
+				// console.log(newGrid[i][j]);
+				// console.log(grid[i][j]);
 			}
 		}
 	}
