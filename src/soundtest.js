@@ -7,8 +7,8 @@ function setup() {
 	// osc.amp(0.5);
 	osc.start();
 	osc.freq(466.16);
+	osc.stop();
 }
 
 function draw() {
-
 }
