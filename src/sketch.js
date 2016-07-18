@@ -157,7 +157,7 @@ function setup() {
 			// - each row is a different octave
 			//
 			// osc.freq();
-			osc.setType('sawtooth');
+			osc.setType('sine');
 			osc.amp(0.3);
 			osc.start();
 			osc.freq(freqs[fsidx + fxidx[x]]);
