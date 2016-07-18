@@ -118,7 +118,7 @@ freqs = [
 	7902.13,
 ];
 // frequency start idx
-fsidx = 60;
+fsidx = 0;
 
 // pentatonic
 fxidx = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21];
@@ -160,7 +160,7 @@ function setup() {
 			osc.setType('sine');
 			osc.amp(0.3);
 			osc.start();
-			osc.freq(freqs[fsidx + fxidx[x]]);
+			// osc.freq(freqs[fsidx + (12 * y) + fxidx[x]]);
 			osc.stop();
 			r.push(osc);
 		}
@@ -208,6 +208,20 @@ function step() {
 				// console.log(newGrid[i][j]);
 				// console.log(grid[i][j]);
 			}
+
+			// shoot up in y direction if three below are on and both neighbors
+			// are off
+			if (
+					// must be not on left or right corners
+					i < grid.length - 1 && i > 0 &&
+					// can't be at bottom
+					j > 0 &&
+					// neighbors and self must be off
+					grid[i+1][j] == off && grid[i-1][j] == off && grid[i][j] == off &&
+					// three below must be on
+					grid[i-1][j-1] == on && grid[i][j-1] == on && grid[i+1][j-1] == on) {
+				newGrid[i][j] = on;
+			}
 		}
 	}
 	grid = newGrid;
@@ -219,7 +233,7 @@ function sound() {
 		for (var j = 0; j < grid[i].length; j++) {
 			if (grid[i][j] == on) {
 				sounds[i][j].start();
-				sounds[i][j].freq(freqs[fsidx + fxidx[i]]);
+				sounds[i][j].freq(freqs[fsidx + (12 * (j % 8)) + fxidx[i]]);
 				sounds[i][j].stop(0.75);
 			} else {
 				sounds[i][j].stop();
