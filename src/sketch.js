@@ -118,7 +118,7 @@ freqs = [
 	7902.13,
 ];
 // frequency start idx
-fsidx = 0;
+fsidx = 24;
 
 // pentatonic
 fxidx = [0, 2, 4, 7, 9, 12, 14, 16, 19, 21];
@@ -157,7 +157,7 @@ function setup() {
 			// - each row is a different octave
 			//
 			// osc.freq();
-			osc.setType('sine');
+			osc.setType('sawtooth');
 			osc.amp(0.3);
 			osc.start();
 			// osc.freq(freqs[fsidx + (12 * y) + fxidx[x]]);
